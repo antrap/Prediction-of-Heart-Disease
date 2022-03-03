@@ -1,0 +1,93 @@
+# Prediction Of Heart Disease
+
+#importing pandas library and getting the dataset
+import pandas as pd
+heart_data=pd.read_csv('C:\\Users\\Antra Phukan\\Desktop\\New folder\\heart disease prediction\\heart.csv')
+
+we have 14 columns in our data set
+
+#Information about the data
+heart_data.info()
+
+#Total Rows and Columns
+heart_data.shape
+
+There are 1025 rows and 14 columns
+
+#statiscal description about the data
+heart_data.describe()
+
+#we want to know the total nos of people with heart disease and the ones that are not
+heart_data['target'].value_counts()
+
+#printing ist 5 rows
+heart_data.head()
+
+total heart disease patients=526
+total patients without heart disease=499
+
+#splitting the input features and target
+features=heart_data.drop(columns='target',axis=1)
+targets=heart_data['target']
+
+print(features)
+
+print(targets)
+
+# Train-Test Split
+
+Splitting the training and testing data into 70:30
+
+#importing required libraries
+from sklearn.model_selection import train_test_split
+X_train,X_test,Y_train,Y_test=train_test_split(features,targets,test_size=0.3,random_state=2,stratify=targets) 
+
+print(X_train.shape)
+
+X_train.info()
+
+print(X_test.shape)
+
+X_test.info()
+
+# Training our Model
+we train the Machine learning Model using Logistic Regression
+
+from sklearn.linear_model import LogisticRegression
+model= LogisticRegression()
+
+# fit the model with data
+model.fit(X_train,Y_train)
+
+# Model Evaluation
+
+#importing necessary function
+from sklearn.metrics import accuracy_score
+X_train_prediction=model.predict(X_train)
+training_data_accuracy=accuracy_score(X_train_prediction,Y_train)
+print('Training data accuracy is:',training_data_accuracy)
+
+Our training data is 86.47% accurate
+
+X_test_prediction=model.predict(X_test)
+test_data_accuracy=accuracy_score(X_test_prediction,Y_test)
+print('Test data accuracy is:',test_data_accuracy)
+
+our test data is 79.22% accurate
+
+#building the final predictive system which will give us the target by knowing the input features
+input_data=(70, 1, 0, 145, 174, 0, 1, 125, 1, 2.6, 0, 0, 3 )
+import numpy as np
+input_data_as_numpy_array=np.asarray(input_data)
+input_data_reshaped=input_data_as_numpy_array.reshape(1,-1)
+
+prediction=model.predict(input_data_reshaped)
+print(prediction)
+
+if(prediction[0]==0):
+  print('The person does not have heart disease')
+else:
+  print('The person has heart disease')
+
+
+# END
